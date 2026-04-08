@@ -23,10 +23,11 @@
 
 /* --- SOLUTION PROBLÈME 1 : Barre qui flotte --- */
 /* Pour s'assurer que le pied de page reste en bas, même si la page est courte,
-   on force le HTML et le BODY à prendre toute la hauteur de l'écran. */
+on force le HTML et le BODY à prendre toute la hauteur de l'écran. */
 html,
 body {
-  height: 100%;
+  min-height: 100%;
+  overscroll-behavior-y: none; /* Supprime le rebond élastique de page */
 }
 
 body {
@@ -44,7 +45,7 @@ body {
   padding-top: calc(10px + var(--safe-top));
 
   /* Espace en bas pour laisser de la place à la barre fixe (70px hauteur + marge) */
-  padding-bottom: calc(80px + var(--safe-bottom));
+  padding-bottom: calc(100px + var(--safe-bottom));
 
   /* UX Tactile PWA */
   -webkit-tap-highlight-color: transparent;
