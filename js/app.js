@@ -1,3 +1,4 @@
+import { mesExercices } from "./exercices.js";
 let deferredPrompt;
 const installBtn = document.getElementById("install-btn");
 
@@ -25,59 +26,166 @@ window.addEventListener("appinstalled", () => {
   console.log("[PWA] Application installée avec succès !");
 });
 
-
 const contentDiv = document.getElementById("content");
-
-async function loadArticles() {
-  contentDiv.innerHTML = "<p>Chargement...</p>";
-
+async function loadExercices() {
+  contentDiv.innerHTML = "<p>Chargement des exercices...</p>";
   try {
-    // Cette URL n'existe pas réellement sur le serveur !
-    const response = await fetch(
-      "https://api.goodbarber.net/front/get_items/3000155/73744247/",
-    );
-
-    if (!response.ok) throw new Error("Erreur réseau");
-
-    const articles = await response.json();
-
-    // Génération du HTML
-    const html = articles.items
+    if (!navigator.onLine) {
+      throw new Error(
+        "Pas de connexion internet. Impossible de charger les exercices.",
+      );
+    }
+    const html = mesExercices
+      .slice(0, 6)
       .map(
-        (article) => `
-            <div class="card">
-                <img src="${article.largeThumbnail}" alt="${article.title}">
-                <h3>${article.title}</h3>
-                <button class="fav-btn" data-id="${article.id}">
-                ⭐ Favoris
-                </button>
-                </div>
-        `,
+        (exo) => `
+        <div class="card">
+          <img src="${exo.largeThumbnail}" alt="${exo.title}">
+          <h3>${exo.title}</h3>
+          <p>⏱️ ${exo.time}s | ⏸️ ${exo.pause}s</p>
+          <a href="exercice.html?id=${exo.id}" class="card-btn">Commencer</a>
+          <button class="fav-btn" data-id="${exo.id}">⭐ Favoris</button>
+        </div>
+      `,
       )
       .join("");
 
     contentDiv.innerHTML = html;
-    const favButtons = document.querySelectorAll(".fav-btn");
-    // Boucler dessus pour attacher l'événement click
-    favButtons.forEach((btn) => {
+    document.querySelectorAll(".fav-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        const articleId = e.target.getAttribute("data-id");
-        toggleFavorite(articleId); // Appel de la fonction globale
+        const exoId = e.currentTarget.getAttribute("data-id");
+        // On trouve l'objet exercice complet pour l'envoyer aux favoris
+        const exercice = mesExercices.find((item) => item.id == exoId);
+
+        if (exercice) {
+          toggleFavorite(exercice); // On envoie l'objet, pas juste l'ID
+        }
       });
     });
-  } catch (e) {
-    console.error(e);
-    contentDiv.innerHTML =
-      '<p style="color:red">Impossible de charger les articles.</p>';
+  } catch (error) {
+    contentDiv.innerHTML = `<p style="color:red">⚠️ ${error.message}</p>`;
   }
 }
 
-loadArticles();
+
+// loader uniquement les favoris
+async function loadFavorisPage() {
+  const contentDiv = document.getElementById("content");
+  contentDiv.innerHTML = "<p>Chargement de vos favoris...</p>";
+
+  try {
+    const db = await dbPromise; // On récupère la base de données
+    const favoris = await db.getAll("favorites"); // On lit tout le contenu
+
+    if (favoris.length === 0) {
+      contentDiv.innerHTML = `
+        <div style="text-align: center; margin-top: 50px;">
+            <h2>Aucun favori</h2>
+            <p>Allez sur l'accueil pour ajouter des exercices !</p>
+        </div>
+      `;
+      return;
+    }
+
+    // On génère l'affichage (avec un bouton pour les retirer)
+    const html = favoris.map(exo => `
+      <div class="card">
+        <img src="${exo.largeThumbnail}" alt="${exo.title}">
+        <h3>${exo.title}</h3>
+        <a class="launch-btn" href="exercice.html?id=${exo.id}">Démarrer</a>
+        <button class="remove-fav-btn" data-json='${JSON.stringify(exo)}'>
+          ❌ Retirer
+        </button>
+      </div>
+    `).join("");
+
+    contentDiv.innerHTML = html;
+
+    document.querySelectorAll(".remove-fav-btn").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        const exerciceData = JSON.parse(e.target.getAttribute("data-json"));
+        await toggleFavorite(exerciceData);
+        loadFavorisPage(); // Recharge la liste instantanément !
+      });
+    });
+
+  } catch (error) {
+    console.error("Erreur favoris :", error);
+    contentDiv.innerHTML = "<p>Erreur lors du chargement des favoris.</p>";
+  }
+}
+if (window.location.pathname.includes("favoris.html")) {
+  loadFavorisPage();
+}else {
+  loadExercices(); 
+}
+
+
+
+
+
+// loader l'exercice choisi
+const contentExercice = document.getElementById("contentExercice");
+const paramString = window.location.search;
+const urlParams = new URLSearchParams(paramString);
+const exerciceId = urlParams.get("id");
+const exerciceTrouve = mesExercices.find((exo) => exo.id === exerciceId);
+async function loadExercice() {
+  contentExercice.innerHTML = "<p>Chargement des exercices...</p>";
+  try {
+    if (!navigator.onLine) {
+      throw new Error(
+        "Pas de connexion internet. Impossible de charger les exercices.",
+      );
+    }
+    const html = `
+        <div class="card">
+          <img src="${exerciceTrouve.largeThumbnail}" alt="${exerciceTrouve.title}">
+          <h3>${exerciceTrouve.title}</h3>
+          <p>⏱️ Objectif : ${exerciceTrouve.time}s</p>
+      
+          <div id="timer-display" style="font-size: 3rem; font-weight: bold; margin: 20px 0;">
+          ${exerciceTrouve.time}s
+          </div>
+
+          <button id="start-btn" class="card-btn">Démarrer</button>
+        </div>`;
+
+    contentExercice.innerHTML = html;
+    const startBtn = document.getElementById("start-btn");
+    const timerDisplay = document.getElementById("timer-display");
+    let tempsRestant = exerciceTrouve.time;
+    let foudre;
+
+    startBtn.addEventListener("click", () => {
+      startBtn.disabled = true;
+      startBtn.innerText = "En cours...";
+      foudre = setInterval(() => {
+        tempsRestant--;
+        timerDisplay.innerText = `${tempsRestant}s`;
+
+        if (tempsRestant <= 0) {
+          clearInterval(foudre);
+          timerDisplay.innerText = "Terminé ! 🏁";
+          timerDisplay.style.color = "green";
+          startBtn.innerText = "Bravo !";
+        }
+      }, 1000);
+    });
+  } catch (error) {
+    contentExercice.innerHTML = `<p style="color:red">⚠️ ${error.message}</p>`;
+  }
+}
+
+if (contentExercice) {
+  loadExercice();
+}
+
 function updateNetworkStatus() {
   const banner = document.getElementById("offline-banner");
   if (navigator.onLine) {
     banner.style.display = "none";
-    // Optionnel : recharger les articles si on revient en ligne
+    // Optionnel : recharger les exercices si on revient en ligne
   } else {
     banner.style.display = "block";
   }
@@ -127,21 +235,21 @@ function showUpdateNotification(worker) {
     worker.postMessage({ action: "skipWaiting" });
   });
 }
-const form = document.getElementById('contact-form');
-form.addEventListener('submit', async (e) => {
-e.preventDefault();
-// 1. Enregistrer le message en local d'abord
-const db = await dbPromise;
-await db.put('drafts', message.value, 'pending-sync');
-// 2. Enregistrer l'intention de synchronisation
-if ('serviceWorker' in navigator && 'SyncManager' in window) {
-const swReg = await navigator.serviceWorker.ready;
-await swReg.sync.register('sync-contact');
-console.log('Synchro planifiée !');
-// Optionnel : Afficher un toast UI "Message mis en file d'attente"
-} else {
-// Fallback classique si l'API n'est pas supportée (ex: Safari iOS)
-console.log('Envoi immédiat sans Background Sync...');
-// TODO: Exécuter le fetch() classique ici
-}
-});
+// const form = document.getElementById("contact-form");
+// form.addEventListener("submit", async (e) => {
+//   e.preventDefault();
+//   // 1. Enregistrer le message en local d'abord
+//   const db = await dbPromise;
+//   await db.put("drafts", message.value, "pending-sync");
+//   // 2. Enregistrer l'intention de synchronisation
+//   if ("serviceWorker" in navigator && "SyncManager" in window) {
+//     const swReg = await navigator.serviceWorker.ready;
+//     await swReg.sync.register("sync-contact");
+//     console.log("Synchro planifiée !");
+//     // Optionnel : Afficher un toast UI "Message mis en file d'attente"
+//   } else {
+//     // Fallback classique si l'API n'est pas supportée (ex: Safari iOS)
+//     console.log("Envoi immédiat sans Background Sync...");
+//     // TODO: Exécuter le fetch() classique ici
+//   }
+// });

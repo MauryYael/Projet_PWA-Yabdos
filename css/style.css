@@ -33,146 +33,399 @@ user-select: none;
 body {
   font-family: "Roboto", sans-serif;
 }
-header{
-    color: #ff0000;
-}
-/* #region css base */
-/* --- Variables & Thèmes --- */
-:root {
-  --primary-color: #2563eb;
-  --bg-color: #f8fafc;
-  --card-bg: #ffffff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --header-bg: #ffffff;
-  --tabbar-bg: #ffffff;
-  --border-color: #e2e8f0;
-}
 
-@media (prefer-color-scheme: dark) {
-  :root {
-    --bg-color: #0f172a;
-    --card-bg: #1e293b;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --header-bg: #1e293b;
-    --tabbar-bg: #1e293b;
-    --border-color: #334155;
-  }
-}
 
-/* --- Base & Reset --- */
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  line-height: 1.6;
-  /* Empêche le rebond du scroll sur iOS */
-  overscroll-behavior-y: none;
-}
-
-/* --- Header --- */
-.app-header {
-  position: sticky;
+/* #region header */
+.app-header{
   top: 0;
-  z-index: 100;
-  background-color: var(--header-bg);
-  padding: 1rem;
-  padding-top: calc(
-    1rem + env(safe-area-inset-top)
-  ); /* Gère l'encoche du haut */
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  justify-content: space-around;
 }
-
-.app-header h1 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-/* --- Bouton Installation --- */
-#install-btn {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 99px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s active;
-}
-
-#install-btn:active {
-  transform: scale(0.95);
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* --- Contenu Principal --- */
-.container {
-  padding: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
-  min-height: calc(100vh - 140px);
-}
-
-/* --- Barre de Navigation (Tab Bar) --- */
+/* #endregion */
+/* #region tabbar */
 .tab-bar {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(
-    65px + env(safe-area-inset-bottom)
-  ); /* Gère le bas des écrans iPhone */
-  background: var(--tabbar-bg);
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 400px;
+  border-radius: 9999px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid var(--border-color);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding: 0.75rem 2rem;
+  z-index: 50;  
+  background-color: rgb(122, 49, 191);
+}
+/* #endregion */
+
+/* #region tabbar */
+.card-btn{color: #ff4444;}
+/* #endregion */
+
+
+
+.container{
+  width: 100%;
+}
+
+
+/* #region othercss */
+/* ============================================
+   YABDOS – THÈME DARK / VIOLET
+   À ajouter à la fin de style.css
+   ============================================ */
+
+/* #region variables & reset */
+:root {
+  --clr-bg:        #0f0a1a;
+  --clr-surface:   #15102a;
+  --clr-surface-2: #1e1435;
+  --clr-border:    #2d1a4a;
+  --clr-purple:    #7c3aed;
+  --clr-purple-lt: #c084fc;
+  --clr-text:      #e2e0f0;
+  --clr-muted:     #8b7faa;
+  --clr-danger:    #ff6b6b;
+  --radius-card:   14px;
+  --radius-pill:   999px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  font-family: "Roboto", sans-serif;
+  min-height: 100%;
+}
+/* #endregion */
+
+/* #region header */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--clr-bg);
+  border-bottom: 0.5px solid var(--clr-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
   z-index: 100;
 }
 
+.titre {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--clr-purple-lt), var(--clr-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#install-btn {
+  font-size: 12px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 0.5px solid var(--clr-purple);
+  color: var(--clr-purple-lt);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+#install-btn.hidden { display: none; }
+/* #endregion */
+
+/* #region tab-bar */
+.tab-bar {
+  background: var(--clr-purple);
+  border-radius: var(--radius-pill);
+  padding: 10px 32px;
+}
+
 .tab-btn {
-  background: none;
+  font-size: 22px;
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+
+.tab-btn:active { transform: scale(0.88); }
+/* #endregion */
+
+/* #region container (pages scrollables : index & favoris) */
+.container {
+  padding-top: calc(56px + 16px);
+  padding-bottom: calc(80px + env(safe-area-inset-bottom) + 16px);
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* #endregion */
+
+/* #region cards exercices (index.html) */
+.card {
+  background: var(--clr-surface);
+  border: 0.5px solid var(--clr-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: var(--clr-surface-2);
+}
+
+.card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin: 12px 14px 4px;
+}
+
+.card p {
+  font-size: 12px;
+  color: var(--clr-muted);
+  margin: 0 14px 12px;
+}
+
+.card .card-btn {
+  display: inline-block;
+  margin: 0 14px 8px;
+  padding: 7px 18px;
+  background: var(--clr-purple);
+  color: #fff;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
   border: none;
-  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.card .fav-btn {
+  display: inline-block;
+  margin: 0 14px 14px;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--clr-purple-lt);
+  border: 0.5px solid var(--clr-border);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  cursor: pointer;
+}
+/* #endregion */
+
+/* #region page EXERCICE (non scrollable, tout visible) */
+body:has(#contentExercice) {
+  overflow: hidden;
+}
+
+.contentExercice {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: calc(70px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.contentExercice .card {
+  width: 100%;
+  max-width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  flex: 1;
-  padding: 10px 0;
-}
-
-.tab-btn.active {
-  color: var(--primary-color);
-}
-
-/* --- Effets de chargement (Skeleton) --- */
-#content {
-  font-size: 1.1rem;
   text-align: center;
-  padding-top: 2rem;
-  color: var(--text-muted);
+  padding-bottom: 20px;
 }
+
+.contentExercice .card img {
+  height: 180px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+
+.contentExercice .card h3 {
+  font-size: 18px;
+  margin: 14px 14px 4px;
+}
+
+.contentExercice .card p {
+  margin-bottom: 0;
+}
+
+#timer-display {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--clr-purple-lt);
+  margin: 16px 0;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+#start-btn {
+  margin: 0 20px;
+  width: calc(100% - 40px);
+  padding: 13px;
+  background: var(--clr-purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#start-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+/* #endregion */
+
+/* #region page FAVORIS */
+.remove-fav-btn {
+  background: transparent;
+  border: 0.5px solid #3d1a1a;
+  color: var(--clr-danger);
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 5px 9px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* items favoris en ligne (optionnel si tu reuses .card) */
+.fav-item {
+  background: var(--clr-surface);
+  border: 0.5px solid var(--clr-border);
+  border-radius: var(--radius-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+
+.fav-item img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.fav-item h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin: 0 0 2px;
+}
+
+.fav-item p {
+  font-size: 11px;
+  color: var(--clr-muted);
+  margin: 0;
+}
+/* #endregion */
+
+/* #region offline banner */
+.offline-banner {
+  top: 56px;
+  font-size: 13px;
+}
+/* #endregion */
+
+/* #region update notification */
+#update-notification {
+  border-radius: var(--radius-card);
+  background: var(--clr-surface) !important;
+  border: 0.5px solid var(--clr-purple);
+  color: var(--clr-text);
+  font-size: 13px;
+  padding: 10px 14px;
+}
+
+#reload-btn {
+  background: var(--clr-purple);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+/* #endregion */
+/* #endregion */
+/* #region btnsfavoris */
+/* #region favoris cards */
+.card {
+  background: var(--clr-surface);
+  border: 0.5px solid var(--clr-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin: 12px 14px 8px;
+}
+
+.card .launch-btn,
+.card .remove-fav-btn {
+  display: block;
+  margin: 0 14px;
+  padding: 10px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.card .launch-btn {
+  background: var(--clr-purple);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.card .remove-fav-btn {
+  background: transparent;
+  color: var(--clr-danger);
+  border: 0.5px solid var(--clr-danger);
+  margin-bottom: 14px;
+}
+
+.card .launch-btn:active,
+.card .remove-fav-btn:active {
+  opacity: 0.75;
+  transform: scale(0.97);
+}
+/* #endregion */
 /* #endregion */

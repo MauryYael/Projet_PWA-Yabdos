@@ -1,31 +1,24 @@
 // js/favorites.js
-async function toggleFavorite(articleId) {
-  const db = await dbPromise; // dbPromise vient de db.js
-  // Récupérer l'article complet (simulé ici, en vrai on le prendrait du DOM ou d'une variable)
-  const article = {
-    id: articleId,
-    title: `Article ${articleId}`,
-    timestamp: new Date(),
-  };
-  // Transaction Read-Write
+async function toggleFavorite(exercice) {
+  // On passe l'objet exercice entier
+  const db = await dbPromise;
   const tx = db.transaction("favorites", "readwrite");
   const store = tx.objectStore("favorites");
-  // Vérifier s'il existe déjà
-  const existing = await store.get(articleId);
+
+  const existing = await store.get(exercice.id);
   if (existing) {
-    await store.delete(articleId);
+    await store.delete(exercice.id);
     console.log("Retiré des favoris");
   } else {
-    //  ... dans le bloc else (Ajout favori) ...
-    // Notification
-    await store.put(article);
+    await store.put(exercice); // On stocke l'objet complet (id, title, largeThumbnail...)
+    console.log("Ajouté aux favoris");
 
     const hasPerm = await checkNotificationPermission();
     if (hasPerm) {
       // Si on est sur mobile Android, on passe souvent par le SW
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.ready.then((reg) => {
-          reg.showNotification("Article sauvegardé", {
+          reg.showNotification("Exercice sauvegardé", {
             body: "Vous pourrez le lire hors connexion.",
             icon: "/images/icon512_maskable.png",
             vibrate: [100, 50, 100],
@@ -33,7 +26,7 @@ async function toggleFavorite(articleId) {
         });
       } else {
         // Fallback PC Classique
-        new Notification("Article sauvegardé");
+        new Notification("Exercice sauvegardé");
       }
     }
   }

@@ -20,7 +20,7 @@
   "display": "standalone",
   "dir": "auto",
   "lang": "fr-FR",
-  "name": "PWA News",
+  "name": "Yabdos",
   "short_name": "News",
   "scope": "/",
   "start_url": "/index.html",
