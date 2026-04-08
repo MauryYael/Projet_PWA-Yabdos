@@ -172,7 +172,7 @@ button {
   bottom: 0; /* Collé en bas */
   left: 0;
   right: 0;
-  height: 70px; /* Hauteur fixe de la barre */
+  height: 90px; /* Hauteur fixe de la barre */
   background: rgba(15, 23, 42, 0.9); /* Noir bleuté translucide */
   backdrop-filter: blur(10px); /* Effet de verre flouté derrière */
   display: flex;
