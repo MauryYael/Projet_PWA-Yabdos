@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0 ,viewport-fit=cover"
+    />
+    <title>PWA News</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <link rel="apple-touch-icon" href="images/icon512_maskable.png" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefer-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1e293b"
+      media="(prefer-color-scheme: dark)"
+    />
+    <!-- Librairie idb globale -->
+    <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd.js"></script>
+    <!-- Vos scripts (L'ordre est important !) -->
+    <script src="js/db.js"></script>
+    <script src="js/favorites.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <h1 class="titre">📰PWA News</h1>
+
+      <button id="install-btn" class="hidden">Installer l'App</button>
+    </header>
+    <main id="content" class="container">loading...</main>
+    <div id="offline-banner" class="offline-banner">⚠️ Mode Hors-Ligne</div>
+    <nav class="tab-bar">
+      <button class="tab-btn active">🏠Accueil</button>
+      <button class="tab-btn active">⭐ Favoris</button>
+    </nav>
+    <section id="contact-section" class="container">
+      <h2>Nous contacter</h2>
+      <form id="contact-form">
+        <label>Email</label>
+        <!-- type="email" affiche @ et . -->
+        <input type="email" id="email" inputmode="email" />
+        <label>Message</label>
+        <textarea id="message"></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+        <div
+          id="update-notification"
+          style="
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: burlywood;
+            z-index: 200;
+          "
+        >
+          Nouvelle version disponible !
+          <button
+            id="reload-btn"
+            style="margin-left: 10px; padding: 5px 10px; cursor: pointer"
+          >
+            Mettre à jour
+          </button>
+        </div>
+  </body>
+</html>
