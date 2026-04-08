@@ -180,6 +180,8 @@ button {
   align-items: center;
   border-top: 1px solid #27272a; /* Ligne fine de séparation */
   z-index: 1000; /* Reste au-dessus de tout le reste */
+  padding-bottom: var(--safe-bottom);
+
 }
 
 .tab-btn {
