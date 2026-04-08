@@ -7,12 +7,12 @@
   /* Couleurs principales (Fusionnées et renommées) */
   --bg-dark: #0f172a;
   --surface-dark: #1e293b;
-  --primary: #8b5cf6;       /* Violet vibrant */
+  --primary: #8b5cf6; /* Violet vibrant */
   --primary-light: #c084fc;
   --text-main: #f8fafc;
   --text-dim: #94a3b8;
-  --danger: #ef4444;        /* Rouge vif corrigé */
-  --card-bg: #2b173b;       /* Fond des cartes violet sombre */
+  --danger: #ef4444; /* Rouge vif corrigé */
+  --card-bg: #2b173b; /* Fond des cartes violet sombre */
 }
 
 * {
@@ -24,7 +24,8 @@
 /* --- SOLUTION PROBLÈME 1 : Barre qui flotte --- */
 /* Pour s'assurer que le pied de page reste en bas, même si la page est courte,
    on force le HTML et le BODY à prendre toute la hauteur de l'écran. */
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden; /* 🔒 Bloque tout défilement global */
   overscroll-behavior-y: none; /* Stoppe le rebond sur l'ensemble de la page */
@@ -35,7 +36,7 @@ body {
   color: var(--text-main);
   font-family: "Lexend", sans-serif;
   line-height: 1.6;
-  
+
   /* On utilise Flexbox sur le body pour gérer la structure verticale */
   display: flex;
   flex-direction: column;
@@ -46,14 +47,15 @@ body {
 
   /* Espace en bas pour laisser de la place à la barre fixe (70px hauteur + marge) */
   padding-bottom: calc(80px + var(--safe-bottom));
-  
+
   /* UX Tactile PWA */
   -webkit-tap-highlight-color: transparent;
-
 }
 
 /* Empêcher la sélection de texte sur l'interface */
-.app-header, .tab-bar, button {
+.app-header,
+.tab-bar,
+button {
   user-select: none;
   -webkit-user-select: none;
 }
@@ -76,7 +78,7 @@ body {
   text-transform: uppercase;
   letter-spacing: -1px;
   /* Reset de la marge par défaut des h1 pour être précis */
-  margin: 0; 
+  margin: 0;
 }
 
 #install-btn {
@@ -90,21 +92,28 @@ body {
   cursor: pointer;
 }
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 /* #endregion */
 
 /* #region GRID & CARDS */
 .container {
   padding: 1rem;
+  /* 👇 Ajoute l'espace du haut et du bas directement dans le conteneur */
+  padding-top: calc(10px + var(--safe-top));
+  padding-bottom: calc(90px + var(--safe-bottom));
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 
-  /* --- SOLUTION PROBLÈME 1 (Suite) : Flexbox Main --- */
-  /* On dit à la grille de prendre tout l'espace disponible verticalement.
-     S'il n'y a pas assez de cartes, le fond de la page continuera
-     visuellement vers la barre de navigation. */
-  flex: 1 0 auto;
+  flex: 1 1 auto; /* Permet au conteneur de prendre l'espace et de rétrécir si besoin */
+  overflow-y: auto; /* 🔓 Autorise UNIQUEMENT le conteneur à scroller */
+  -webkit-overflow-scrolling: touch; /* Scroll fluide sur iOS */
+}
+.container::-webkit-scrollbar {
+  display: none;
 }
 
 .card {
@@ -123,12 +132,20 @@ body {
   object-fit: cover;
 }
 
-.card h3 { padding: 1rem 1rem 0.5rem; font-size: 1.2rem; }
-.card p { padding: 0 1rem 1rem; color: var(--text-dim); font-size: 0.9rem; }
+.card h3 {
+  padding: 1rem 1rem 0.5rem;
+  font-size: 1.2rem;
+}
+.card p {
+  padding: 0 1rem 1rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
 /* #endregion */
 
 /* #region BOUTONS D'ACTION */
-.card-btn, .launch-btn {
+.card-btn,
+.launch-btn {
   display: block;
   text-align: center;
   text-decoration: none;
@@ -140,7 +157,8 @@ body {
   font-weight: bold;
 }
 
-.fav-btn, .remove-fav-btn {
+.fav-btn,
+.remove-fav-btn {
   background: transparent;
   border: 1px solid #3f3f46;
   color: var(--text-main);
@@ -159,17 +177,17 @@ body {
 /* #region NAVIGATION (TABBAR) */
 .tab-bar {
   position: fixed; /* Fixe au bas de l'écran (viewport) */
-  bottom: 0;      /* Collé en bas */
+  bottom: 0; /* Collé en bas */
   left: 0;
   right: 0;
-  height: 70px;   /* Hauteur fixe de la barre */
+  height: 70px; /* Hauteur fixe de la barre */
   background: rgba(15, 23, 42, 0.9); /* Noir bleuté translucide */
-  backdrop-filter: blur(10px);   /* Effet de verre flouté derrière */
+  backdrop-filter: blur(10px); /* Effet de verre flouté derrière */
   display: flex;
   justify-content: space-around;
   align-items: center;
   border-top: 1px solid #27272a; /* Ligne fine de séparation */
-  z-index: 1000;  /* Reste au-dessus de tout le reste */
+  z-index: 1000; /* Reste au-dessus de tout le reste */
 }
 
 .tab-btn {
@@ -179,7 +197,9 @@ body {
   transition: transform 0.1s;
 }
 
-.tab-btn:active { transform: scale(0.9); }
+.tab-btn:active {
+  transform: scale(0.9);
+}
 /* #endregion */
 
 /* #region SYSTEME (BANNIERES & NOTIFS) */
@@ -240,7 +260,7 @@ body {
 #timer-display {
   font-size: 4rem !important;
   margin: 1rem 0 !important;
-  font-family: 'monospace';
+  font-family: "monospace";
   color: var(--primary);
   text-align: center;
   text-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
