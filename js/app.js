@@ -30,11 +30,6 @@ const contentDiv = document.getElementById("content");
 async function loadExercices() {
   contentDiv.innerHTML = "<p>Chargement des exercices...</p>";
   try {
-    if (!navigator.onLine) {
-      throw new Error(
-        "Pas de connexion internet. Impossible de charger les exercices.",
-      );
-    }
     const html = mesExercices
       .slice(0, 6)
       .map(
@@ -79,7 +74,7 @@ async function loadFavorisPage() {
 
     if (favoris.length === 0) {
       contentDiv.innerHTML = `
-        <div class="card empty-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
+        <div class="card empty-card " style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
             <h2>Aucun favori</h2>
             <p style="color: grey; margin-top: 10px;">Allez sur l'accueil pour ajouter des exercices !</p>
         </div>
@@ -114,10 +109,14 @@ async function loadFavorisPage() {
     contentDiv.innerHTML = "<p>Erreur lors du chargement des favoris.</p>";
   }
 }
-if (window.location.pathname.includes("favoris.html")) {
-  loadFavorisPage();
-}else {
-  loadExercices(); 
+
+
+if (contentDiv) {
+  if (window.location.pathname.includes("favoris.html")) {
+    loadFavorisPage();
+  } else {
+    loadExercices(); 
+  }
 }
 
 
@@ -133,11 +132,6 @@ const exerciceTrouve = mesExercices.find((exo) => exo.id === exerciceId);
 async function loadExercice() {
   contentExercice.innerHTML = "<p>Chargement des exercices...</p>";
   try {
-    if (!navigator.onLine) {
-      throw new Error(
-        "Pas de connexion internet. Impossible de charger les exercices.",
-      );
-    }
     const html = `
         <div class="card">
           <img src="${exerciceTrouve.largeThumbnail}" alt="${exerciceTrouve.title}">

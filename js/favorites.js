@@ -19,7 +19,7 @@ async function toggleFavorite(exercice) {
       if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.ready.then((reg) => {
           reg.showNotification("Exercice sauvegardé", {
-            body: "Vous pourrez le lire hors connexion.",
+            body: "Cet exercice est maintenant dans vos favoris",
             icon: "/images/icon512_maskable.png",
             vibrate: [100, 50, 100],
           });

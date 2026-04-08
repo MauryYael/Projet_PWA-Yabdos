@@ -1,6 +1,6 @@
 importScripts("https://cdn.jsdelivr.net/npm/idb@7/build/umd.js");
 
-const STATIC_CACHE_NAME = "app-shell-v1.4.4";
+const STATIC_CACHE_NAME = "app-shell-v1.4.5";
 const DYNAMIC_CACHE_NAME = "dynamic-v4";
 const ASSETS_TO_CACHE = [
   "./", // La racine (très important !)
@@ -36,28 +36,29 @@ self.addEventListener("fetch", (event) => {
 const url = new URL(event.request.url);
 console.log(url);
 // A. Stratégie NETWORK FIRST pour l'API externe
-if (url.origin === "https://api.goodbarber.net") {
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        // 1. Si le réseau répond, on met à jour le cache
-        // Attention : Une réponse ne se lit qu'une fois, il faut la cloner
-        const clonedResponse = networkResponse.clone();
+// if (url.origin === "https://api.goodbarber.net") {
+//   event.respondWith(
+//     fetch(event.request)
+//       .then((networkResponse) => {
+//         // 1. Si le réseau répond, on met à jour le cache
+//         // Attention : Une réponse ne se lit qu'une fois, il faut la cloner
+//         const clonedResponse = networkResponse.clone();
 
-        caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-          cache.put(event.request, clonedResponse);
-        });
-        return networkResponse;
-      })
-      .catch((err) => {
-        // 2. Si le réseau échoue, on retourne la version en cache
-        return caches.match(event.request);
-      }),
-  );
-}
+//         caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+//           cache.put(event.request, clonedResponse);
+//         });
+//         return networkResponse;
+//       })
+//       .catch((err) => {
+//         // 2. Si le réseau échoue, on retourne la version en cache
+//         return caches.match(event.request);
+//       }),
+//   );
+// }
 
   // B. Images : Stale-While-Revalidate
-else if (event.request.destination === 'image') {
+// else
+if (event.request.destination === 'image') {
 // Stale-while-revalidate : réponse cache tout de suite, mise à jour en arrière-plan
 event.respondWith(
 caches.match(event.request).then(cachedResponse => {
