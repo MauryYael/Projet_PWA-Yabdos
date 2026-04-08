@@ -12,7 +12,7 @@
   --text-main: #f8fafc;
   --text-dim: #94a3b8;
   --danger: #ef4444;        /* Corrigé en rouge (tu avais mis du violet) */
-  --card-bg: #1e293b;       /* Ajouté car utilisé dans .card */
+  --card-bg: #2b173b;       /* Ajouté car utilisé dans .card */
 }
 
 * {
