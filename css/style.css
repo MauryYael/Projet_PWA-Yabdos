@@ -27,8 +27,6 @@
 html,
 body {
   height: 100%;
-  overflow: hidden; /* 🔒 Bloque tout défilement global */
-  overscroll-behavior-y: none; /* Stoppe le rebond sur l'ensemble de la page */
 }
 
 body {
@@ -50,6 +48,7 @@ body {
 
   /* UX Tactile PWA */
   -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none; /* Supprime le rebond élastique de page */
 }
 
 /* Empêcher la sélection de texte sur l'interface */
