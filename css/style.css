@@ -100,20 +100,12 @@ button {
 /* #region GRID & CARDS */
 .container {
   padding: 1rem;
-  /* 👇 Ajoute l'espace du haut et du bas directement dans le conteneur */
-  padding-top: calc(10px + var(--safe-top));
-  padding-bottom: calc(90px + var(--safe-bottom));
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
 
-  flex: 1 1 auto; /* Permet au conteneur de prendre l'espace et de rétrécir si besoin */
-  overflow-y: auto; /* 🔓 Autorise UNIQUEMENT le conteneur à scroller */
-  -webkit-overflow-scrolling: touch; /* Scroll fluide sur iOS */
-}
-.container::-webkit-scrollbar {
-  display: none;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 1.5rem;
 }
 
 .card {
