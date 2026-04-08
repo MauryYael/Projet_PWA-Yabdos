@@ -1,431 +1,233 @@
-/* #region mobile */
+/* #region VARIABLES & RESET */
 :root {
-/* Définition des zones sûres (pour iPhone X+) */
---safe-top: env(safe-area-inset-top);
---safe-bottom: env(safe-area-inset-bottom);
+  /* Zones de sécurité mobiles */
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+
+  /* Couleurs principales (Fusionnées et renommées pour marcher avec ton code) */
+  --bg-dark: #0f172a;
+  --surface-dark: #1e293b;
+  --primary: #8b5cf6;       /* J'ai renommé accent-violet en primary */
+  --primary-light: #c084fc;
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --danger: #ef4444;        /* Corrigé en rouge (tu avais mis du violet) */
+  --card-bg: #1e293b;       /* Ajouté car utilisé dans .card */
 }
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-/* Padding dynamique */
-/* padding-top: calc(60px + var(--safe-top)); */
-padding-bottom: calc(70px + var(--safe-bottom));
-/* UX Tactile */
--webkit-tap-highlight-color: transparent; /* Supprime le flash gris */
-overscroll-behavior-y: none; /* Supprime le rebond élastique de page */
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Lexend", sans-serif;
+  line-height: 1.6;
+  
+  /* Padding combiné : on prend le max entre ta marge désirée et la zone de sécurité */
+  padding-top: calc(20px + var(--safe-top));
+  padding-bottom: calc(80px + var(--safe-bottom));
+  
+  /* UX Tactile */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
 }
+
 /* Empêcher la sélection de texte sur l'interface */
 .app-header, .tab-bar, button {
-user-select: none;
--webkit-user-select: none;
-}
-/* #endregion */
-.offline-banner {
-  display: none;
-  background: #ff4444;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  position: fixed;
-  top: 60px;
-  width: 100%;
-  z-index: 999;
-}
-
-body {
-  font-family: "Roboto", sans-serif;
-}
-
-
-/* #region header */
-.app-header{
-  top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-}
-/* #endregion */
-/* #region tabbar */
-.tab-bar {
-  position: fixed;
-  bottom: calc(1rem + env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  max-width: 400px;
-  border-radius: 9999px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 0.75rem 2rem;
-  z-index: 50;  
-  background-color: rgb(122, 49, 191);
+  user-select: none;
+  -webkit-user-select: none;
 }
 /* #endregion */
 
-/* #region tabbar */
-.card-btn{color: #ff4444;}
-/* #endregion */
-
-
-
-.container{
-  width: 100%;
-}
-
-
-/* #region othercss */
-/* ============================================
-   YABDOS – THÈME DARK / VIOLET
-   À ajouter à la fin de style.css
-   ============================================ */
-
-/* #region variables & reset */
-:root {
-  --clr-bg:        #0f0a1a;
-  --clr-surface:   #15102a;
-  --clr-surface-2: #1e1435;
-  --clr-border:    #2d1a4a;
-  --clr-purple:    #7c3aed;
-  --clr-purple-lt: #c084fc;
-  --clr-text:      #e2e0f0;
-  --clr-muted:     #8b7faa;
-  --clr-danger:    #ff6b6b;
-  --radius-card:   14px;
-  --radius-pill:   999px;
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body {
-  background-color: var(--clr-bg);
-  color: var(--clr-text);
-  font-family: "Roboto", sans-serif;
-  min-height: 100%;
-}
-/* #endregion */
-
-/* #region header */
+/* #region HEADER */
 .app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  background: var(--clr-bg);
-  border-bottom: 0.5px solid var(--clr-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 100;
+  padding: 2rem 1rem;
+  text-align: center;
+  background: linear-gradient(to bottom, #1e1b4b, #000000);
 }
 
 .titre {
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(90deg, var(--clr-purple-lt), var(--clr-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: -1px;
 }
 
 #install-btn {
-  font-size: 12px;
-  padding: 6px 14px;
-  background: transparent;
-  border: 0.5px solid var(--clr-purple);
-  color: var(--clr-purple-lt);
-  border-radius: var(--radius-pill);
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: var(--primary);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
 }
 
-#install-btn.hidden { display: none; }
+.hidden { display: none; }
 /* #endregion */
 
-/* #region tab-bar */
+/* #region GRID & CARDS */
+.container {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #27272a;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card h3 { padding: 1rem 1rem 0.5rem; font-size: 1.2rem; }
+.card p { padding: 0 1rem 1rem; color: var(--text-dim); font-size: 0.9rem; }
+/* #endregion */
+
+/* #region BOUTONS D'ACTION */
+.card-btn, .launch-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: var(--primary);
+  color: white;
+  margin: 0 1rem 0.5rem;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.fav-btn, .remove-fav-btn {
+  background: transparent;
+  border: 1px solid #3f3f46;
+  color: var(--text-main);
+  margin: 0 1rem 1rem;
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.remove-fav-btn {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+/* #endregion */
+
+/* #region NAVIGATION (TABBAR) */
 .tab-bar {
-  background: var(--clr-purple);
-  border-radius: var(--radius-pill);
-  padding: 10px 32px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: rgba(15, 23, 42, 0.9); /* Noir bleuté pour coller au thème */
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #27272a;
+  z-index: 1000;
 }
 
 .tab-btn {
-  font-size: 22px;
   text-decoration: none;
-  transition: transform 0.15s;
+  font-size: 1.8rem;
+  padding: 10px;
+  transition: transform 0.1s;
 }
 
-.tab-btn:active { transform: scale(0.88); }
+.tab-btn:active { transform: scale(0.9); }
 /* #endregion */
 
-/* #region container (pages scrollables : index & favoris) */
-.container {
-  padding-top: calc(56px + 16px);
-  padding-bottom: calc(80px + env(safe-area-inset-bottom) + 16px);
-  padding-left: 16px;
-  padding-right: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-/* #endregion */
-
-/* #region cards exercices (index.html) */
-.card {
-  background: var(--clr-surface);
-  border: 0.5px solid var(--clr-border);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-}
-
-.card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  display: block;
-  background: var(--clr-surface-2);
-}
-
-.card h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--clr-text);
-  margin: 12px 14px 4px;
-}
-
-.card p {
-  font-size: 12px;
-  color: var(--clr-muted);
-  margin: 0 14px 12px;
-}
-
-.card .card-btn {
-  display: inline-block;
-  margin: 0 14px 8px;
-  padding: 7px 18px;
-  background: var(--clr-purple);
-  color: #fff;
-  text-decoration: none;
-  border-radius: var(--radius-pill);
-  font-size: 13px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-}
-
-.card .fav-btn {
-  display: inline-block;
-  margin: 0 14px 14px;
-  padding: 6px 14px;
-  background: transparent;
-  color: var(--clr-purple-lt);
-  border: 0.5px solid var(--clr-border);
-  border-radius: var(--radius-pill);
-  font-size: 12px;
-  cursor: pointer;
-}
-/* #endregion */
-
-/* #region page EXERCICE (non scrollable, tout visible) */
-body:has(#contentExercice) {
-  overflow: hidden;
-}
-
-.contentExercice {
-  position: fixed;
-  top: 56px;
-  left: 0;
-  right: 0;
-  bottom: calc(70px + env(safe-area-inset-bottom));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  overflow: hidden;
-}
-
-.contentExercice .card {
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* #region SYSTEME (BANNIERES & NOTIFS) */
+.offline-banner {
+  background: var(--danger);
+  color: white;
   text-align: center;
-  padding-bottom: 20px;
+  padding: 5px;
+  font-size: 0.8rem;
+  position: sticky;
+  top: 0;
+  z-index: 150;
+  display: none;
 }
 
-.contentExercice .card img {
-  height: 180px;
-  border-radius: var(--radius-card) var(--radius-card) 0 0;
+#update-notification {
+  position: fixed; /* Ajouté pour être sûr qu'il flotte */
+  bottom: 90px;
+  right: 20px;
+  border-radius: 16px;
+  padding: 15px 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--primary);
+  background-color: #1e1b4b !important;
+  color: white;
+  z-index: 2000;
+}
+/* #endregion */
+
+/* #region PAGE EXERCICE (CHRONO) */
+#contentExercice {
+  height: calc(100vh - 150px); /* Ajusté pour laisser de la place */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  overflow: hidden;
 }
 
-.contentExercice .card h3 {
-  font-size: 18px;
-  margin: 14px 14px 4px;
+#contentExercice .card {
+  width: 100%;
+  max-width: 400px;
+  background: transparent;
+  border: none;
+  text-align: center;
 }
 
-.contentExercice .card p {
-  margin-bottom: 0;
+#contentExercice .card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  object-fit: cover;
+  border: 3px solid var(--primary);
 }
 
 #timer-display {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--clr-purple-lt);
-  margin: 16px 0;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
+  font-size: 4rem !important;
+  margin: 1rem 0 !important;
+  font-family: 'monospace';
+  color: var(--primary);
+  text-align: center;
+  text-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
 }
 
 #start-btn {
-  margin: 0 20px;
-  width: calc(100% - 40px);
-  padding: 13px;
-  background: var(--clr-purple);
-  color: #fff;
+  width: 80%;
+  margin: 1rem auto;
+  padding: 15px;
+  background: var(--primary);
   border: none;
-  border-radius: var(--radius-pill);
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.2s;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
 }
-
-#start-btn:disabled {
-  opacity: 0.55;
-  cursor: default;
-}
-/* #endregion */
-
-/* #region page FAVORIS */
-.remove-fav-btn {
-  background: transparent;
-  border: 0.5px solid #3d1a1a;
-  color: var(--clr-danger);
-  border-radius: 8px;
-  font-size: 12px;
-  padding: 5px 9px;
-  cursor: pointer;
-  margin-top: 8px;
-}
-
-/* items favoris en ligne (optionnel si tu reuses .card) */
-.fav-item {
-  background: var(--clr-surface);
-  border: 0.5px solid var(--clr-border);
-  border-radius: var(--radius-card);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-}
-
-.fav-item img {
-  width: 52px;
-  height: 52px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
-.fav-item h3 {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--clr-text);
-  margin: 0 0 2px;
-}
-
-.fav-item p {
-  font-size: 11px;
-  color: var(--clr-muted);
-  margin: 0;
-}
-/* #endregion */
-
-/* #region offline banner */
-.offline-banner {
-  top: 56px;
-  font-size: 13px;
-}
-/* #endregion */
-
-/* #region update notification */
-#update-notification {
-  border-radius: var(--radius-card);
-  background: var(--clr-surface) !important;
-  border: 0.5px solid var(--clr-purple);
-  color: var(--clr-text);
-  font-size: 13px;
-  padding: 10px 14px;
-}
-
-#reload-btn {
-  background: var(--clr-purple);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-pill);
-  padding: 5px 12px;
-  font-size: 12px;
-  cursor: pointer;
-}
-/* #endregion */
-/* #endregion */
-/* #region btnsfavoris */
-/* #region favoris cards */
-.card {
-  background: var(--clr-surface);
-  border: 0.5px solid var(--clr-border);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-}
-
-.card h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--clr-text);
-  margin: 12px 14px 8px;
-}
-
-.card .launch-btn,
-.card .remove-fav-btn {
-  display: block;
-  margin: 0 14px;
-  padding: 10px;
-  border-radius: var(--radius-pill);
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  border: none;
-  transition: opacity 0.15s, transform 0.1s;
-}
-
-.card .launch-btn {
-  background: var(--clr-purple);
-  color: #fff;
-  margin-bottom: 8px;
-}
-
-.card .remove-fav-btn {
-  background: transparent;
-  color: var(--clr-danger);
-  border: 0.5px solid var(--clr-danger);
-  margin-bottom: 14px;
-}
-
-.card .launch-btn:active,
-.card .remove-fav-btn:active {
-  opacity: 0.75;
-  transform: scale(0.97);
-}
-/* #endregion */
 /* #endregion */
