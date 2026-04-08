@@ -1,18 +1,18 @@
 /* #region VARIABLES & RESET */
 :root {
-  /* Zones de sécurité mobiles */
+  /* Zones de sécurité mobiles (encoches, barres système) */
   --safe-top: env(safe-area-inset-top);
   --safe-bottom: env(safe-area-inset-bottom);
 
-  /* Couleurs principales (Fusionnées et renommées pour marcher avec ton code) */
+  /* Couleurs principales (Fusionnées et renommées) */
   --bg-dark: #0f172a;
   --surface-dark: #1e293b;
-  --primary: #8b5cf6;       /* J'ai renommé accent-violet en primary */
+  --primary: #8b5cf6;       /* Violet vibrant */
   --primary-light: #c084fc;
   --text-main: #f8fafc;
   --text-dim: #94a3b8;
-  --danger: #ef4444;        /* Corrigé en rouge (tu avais mis du violet) */
-  --card-bg: #2b173b;       /* Ajouté car utilisé dans .card */
+  --danger: #ef4444;        /* Rouge vif corrigé */
+  --card-bg: #2b173b;       /* Fond des cartes violet sombre */
 }
 
 * {
@@ -21,19 +21,33 @@
   padding: 0;
 }
 
+/* --- SOLUTION PROBLÈME 1 : Barre qui flotte --- */
+/* Pour s'assurer que le pied de page reste en bas, même si la page est courte,
+   on force le HTML et le BODY à prendre toute la hauteur de l'écran. */
+html, body {
+  height: 100%;
+}
+
 body {
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: "Lexend", sans-serif;
   line-height: 1.6;
   
-  /* Padding combiné : on prend le max entre ta marge désirée et la zone de sécurité */
-  padding-top: calc(20px + var(--safe-top));
+  /* On utilise Flexbox sur le body pour gérer la structure verticale */
+  display: flex;
+  flex-direction: column;
+
+  /* --- SOLUTION PROBLÈME 2 : Espacement trop grand --- */
+  /* J'ai réduit le padding initial de 20px à 10px pour réduire l'espace. */
+  padding-top: calc(10px + var(--safe-top));
+
+  /* Espace en bas pour laisser de la place à la barre fixe (70px hauteur + marge) */
   padding-bottom: calc(80px + var(--safe-bottom));
   
-  /* UX Tactile */
+  /* UX Tactile PWA */
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: none; /* Supprime le rebond élastique de page */
 }
 
 /* Empêcher la sélection de texte sur l'interface */
@@ -45,7 +59,10 @@ body {
 
 /* #region HEADER */
 .app-header {
-  padding: 2rem 1rem;
+  /* --- SOLUTION PROBLÈME 2 (Suite) : Ajustement du padding interne --- */
+  /* J'ai changé '2rem 1rem' (32px haut/bas) par '1rem 1rem 2rem'
+     (16px en haut, 32px en bas). L'espace au-dessus est réduit. */
+  padding: 1rem 1rem 2rem;
   text-align: center;
   background: linear-gradient(to bottom, #1e1b4b, #000000);
 }
@@ -56,6 +73,8 @@ body {
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: -1px;
+  /* Reset de la marge par défaut des h1 pour être précis */
+  margin: 0; 
 }
 
 #install-btn {
@@ -78,6 +97,12 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
+
+  /* --- SOLUTION PROBLÈME 1 (Suite) : Flexbox Main --- */
+  /* On dit à la grille de prendre tout l'espace disponible verticalement.
+     S'il n'y a pas assez de cartes, le fond de la page continuera
+     visuellement vers la barre de navigation. */
+  flex: 1 0 auto;
 }
 
 .card {
@@ -131,18 +156,18 @@ body {
 
 /* #region NAVIGATION (TABBAR) */
 .tab-bar {
-  position: fixed;
-  bottom: 0;
+  position: fixed; /* Fixe au bas de l'écran (viewport) */
+  bottom: 0;      /* Collé en bas */
   left: 0;
   right: 0;
-  height: 70px;
-  background: rgba(15, 23, 42, 0.9); /* Noir bleuté pour coller au thème */
-  backdrop-filter: blur(10px);
+  height: 70px;   /* Hauteur fixe de la barre */
+  background: rgba(15, 23, 42, 0.9); /* Noir bleuté translucide */
+  backdrop-filter: blur(10px);   /* Effet de verre flouté derrière */
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid #27272a;
-  z-index: 1000;
+  border-top: 1px solid #27272a; /* Ligne fine de séparation */
+  z-index: 1000;  /* Reste au-dessus de tout le reste */
 }
 
 .tab-btn {
@@ -169,7 +194,7 @@ body {
 }
 
 #update-notification {
-  position: fixed; /* Ajouté pour être sûr qu'il flotte */
+  position: fixed;
   bottom: 90px;
   right: 20px;
   border-radius: 16px;
@@ -184,7 +209,7 @@ body {
 
 /* #region PAGE EXERCICE (CHRONO) */
 #contentExercice {
-  height: calc(100vh - 150px); /* Ajusté pour laisser de la place */
+  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
   justify-content: center;

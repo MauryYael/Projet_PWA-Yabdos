@@ -79,9 +79,9 @@ async function loadFavorisPage() {
 
     if (favoris.length === 0) {
       contentDiv.innerHTML = `
-        <div style="text-align: center; margin-top: 50px;">
+        <div class="card empty-card" style="text-align: center; min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px;">
             <h2>Aucun favori</h2>
-            <p>Allez sur l'accueil pour ajouter des exercices !</p>
+            <p style="color: grey; margin-top: 10px;">Allez sur l'accueil pour ajouter des exercices !</p>
         </div>
       `;
       return;
